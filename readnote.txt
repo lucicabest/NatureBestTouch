@@ -1,0 +1,6 @@
+merg la directorul proiectului
+
+look for commands https://www.git-tower.com/blog/git-cheat-sheet
+
+git init
+git gui
