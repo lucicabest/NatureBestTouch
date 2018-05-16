@@ -27,24 +27,28 @@
 				<strong>Item Code : </strong><span class="label label-warning">${product.productId}
 				</span>
 			</p>
-			<p>
-				<strong>manufacturer</strong> : ${product.manufacturer}
-			</p>
+			<%-- <p>	<strong>manufacturer</strong> : ${product.manufacturer}	</p> --%>
 			<p>
 				<strong>category</strong> : ${product.category}
 			</p>
-			<p>
+			<c:forEach items="${product.unitSPQ}" var="product_unitSPQ">
+					<div class="col-ms-6">
+						<p>
+						<strong>Size </strong> ${product_unitSPQ.size}oz .................	${product_unitSPQ.price}$                ${product_unitSPQ.unitsInStock} available</p>
+					</div>
+				</c:forEach>
+			<%-- <p>
 				<strong>Available units in stock </strong> : ${product.unitsInStock}
 			</p>
 			<h4>${product.unitPrice}USD</h4>
-			<p>
-				<a href="<spring:url value="/market/products" />"
-					class="btn btn-default"> <span
-					class="glyphicon-hand-left glyphicon"></span> back
-				</a> <a href="#" class="btn btn-warning btn-large"> <span
-					class="glyphicon-shopping-cart glyphicon"> </span> Order Now
-				</a>
-			</p>
+			<p> --%>
+			<a href="<spring:url value="/market/products" />"
+				class="btn btn-default"> <span
+				class="glyphicon-hand-left glyphicon"></span> back
+			</a> <a href="#" class="btn btn-warning btn-large"> <span
+				class="glyphicon-shopping-cart glyphicon"> </span> Order Now
+			</a>
+			
 		</div>
 	</div>
 	</section>

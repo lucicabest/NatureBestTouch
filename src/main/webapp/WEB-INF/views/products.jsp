@@ -28,8 +28,9 @@
 						<div class="caption">
 							<h3>${product.name}</h3>
 							<p>${product.description}</p>
-							<p>${product.unitPrice}USD</p>
-							<p>Available ${product.unitsInStock} units in stock</p>
+							<p>${product.category}</p>
+							<%-- <p>${product.unitPrice}USD</p>
+							<p>Available ${product.unitsInStock} units in stock</p> --%>
 							<p>
 								<a
 									href=" <spring:url value="/market/product?id=${product.productId}" /> "

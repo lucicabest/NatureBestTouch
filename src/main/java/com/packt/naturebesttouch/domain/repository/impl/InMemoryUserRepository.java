@@ -14,9 +14,8 @@ import org.springframework.stereotype.Repository;
 import com.packt.naturebesttouch.domain.User;
 import com.packt.naturebesttouch.domain.repository.UserRepository;
 
-
 @Repository
-public class InMemoryUserRepository implements UserRepository{
+public class InMemoryUserRepository implements UserRepository {
 
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
@@ -41,5 +40,19 @@ public class InMemoryUserRepository implements UserRepository{
 			return user;
 		}
 	}
-	
+
+	@Override
+	public void addUser(User user) {
+		String SQL = "INSERT INTO USERS (FIRST_NAME," + "LAST_NAME," + "EMAIL," + "USERNAME," + "PASSWORD," + "IS_ADMIN) "
+				+ "VALUES (:firstName, :lastName, :email, :username, :password, :isAdmin)";
+		Map<String, Object> params = new HashMap<>();
+		params.put("firstName", user.getFirstName());
+		params.put("lastName", user.getLastName());
+		params.put("email", user.getEmail());
+		params.put("username", user.getUsername());
+		params.put("password", user.getPassword());
+		params.put("isAdmin", user.isIs_admin());
+		jdbcTemplate.update(SQL, params);
+	}
+
 }
