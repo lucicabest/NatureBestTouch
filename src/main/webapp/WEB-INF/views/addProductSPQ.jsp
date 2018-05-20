@@ -9,35 +9,37 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="stylesheet"
 	href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-<title>Products</title>
+<title><spring:message code="addProductSPQ.form.h1Products.label"/></title>
 </head>
 <body>
 	<section>
 	<div class="jumbotron">
 		<div class="container">
-			<h1>Products</h1>
+			<h1><spring:message code="addProductSPQ.form.h1Products.label"/></h1>
 		</div>
 	</div>
 	</section>
 	<section class="container">
 	<div class="row">
+	<div class="col-md-5">
+			<img src="<c:url value="/img/${product.productId}.jpg"></c:url>"alt="image" style="width: 100%" />
+		</div>
 		<div class="col-md-5">
 			<h3>${product.name}</h3>
 			<p>${product.description}</p>
 			<p>
-				<strong>Item Code : </strong><span class="label label-warning">${product.productId}
+				<strong><spring:message code="addProductSPQ.form.productId.label"/></strong> <span class="label label-warning">${product.productId}
 				</span>
 			</p>
 			<%-- <p>	<strong>manufacturer</strong> : ${product.manufacturer}	</p> --%>
 			<p>
-				<strong>category</strong> : ${product.category}
+				<strong><spring:message code="addProductSPQ.form.category.label"/></strong> ${product.category}
 			</p>
 			<c:forEach items="${product.unitSPQ}" var="product_unitSPQ">
 				<div class="col-ms-6">
 					<p>
-						<strong>Size </strong> ${product_unitSPQ.size}oz .................
-						${product_unitSPQ.price}$ ${product_unitSPQ.unitsInStock}
-						available
+						<strong><spring:message code="addProductSPQ.form.size.label"/></strong> ${product_unitSPQ.size}oz .................
+						${product_unitSPQ.price}$ .......... <spring:message code="addProductSPQ.form.stock.label"/> ${product_unitSPQ.unitsInStock}
 					</p>
 				</div>
 			</c:forEach>
@@ -46,7 +48,7 @@
 			</p>
 			<h4>${product.unitPrice}USD</h4>
 			<p> --%>
-			<strong>Add an extra size, price and stock </strong>
+			<strong><spring:message code="addProductSPQ.form.summary.label"/></strong>
 
 		</div>
 	</div>
@@ -55,7 +57,7 @@
 	<section class="container"> <form:form method="POST"
 		modelAttribute="newProductSPQ" class="form-horizontal">
 		<fieldset>
-			<legend>Add new size, price, stock</legend>
+			<legend><spring:message code="addProductSPQ.form.legend.label"/></legend>
 			<%-- <div class="form-group">
 				<label class="control-label col-lg-2 col-lg-2" for="productId">Product
 					Id</label>
@@ -80,7 +82,7 @@
 			</div>
 
 			<div class="form-group">
-				<label class="control-label col-lg-2 col-lg-2" for="price">Price</label>
+				<label class="control-label col-lg-2 col-lg-2" for="price"><spring:message code="addProductSPQ.form.price.label"/></label>
 				<div class="col-lg-10">
 					<form:input id="price" path="price" type="text"
 						class="form:input-large" />
@@ -88,7 +90,7 @@
 			</div>
 
 			<div class="form-group">
-				<label class="control-label col-lg-2 col-lg-2" for="unitsInStock">Stock</label>
+				<label class="control-label col-lg-2 col-lg-2" for="unitsInStock"><spring:message code="addProductSPQ.form.stock.label"/></label>
 				<div class="col-lg-10">
 					<form:input id="unitsInStock" path="unitsInStock" type="text"
 						class="form:input-large" />
@@ -98,7 +100,7 @@
 			<div class="form-group">
 				<div class="col-lg-offset-2 col-lg-10">
 					<input type="submit" id="btnAdd" class="btn btn-primary"
-						value="Add" />
+						value=<spring:message code="addProductSPQ.form.Add.label"/> />
 				</div>
 			</div>
 
@@ -109,7 +111,7 @@
 		<a
 			href="<spring:url value="/market/product?id=${product.productId}" />"
 			class="btn btn-default"> <span
-			class="glyphicon-hand-left glyphicon"></span> back
+			class="glyphicon-hand-left glyphicon"></span> <spring:message code="addProductSPQ.form.back.label"/>
 		</a>
 		<%--		<a href="#" class="btn btn-warning btn-large"> <span
 				class="glyphicon-shopping-cart glyphicon"> </span> Add

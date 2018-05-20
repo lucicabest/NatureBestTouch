@@ -1,7 +1,11 @@
 package com.packt.naturebesttouch.controller;
 
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+
+import javax.servlet.http.HttpServletRequest;
+
+//import java.util.List;
+//import java.util.Map;
 
 //import java.math.BigDecimal;
 
@@ -12,15 +16,16 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.MatrixVariable;
+//import org.springframework.web.bind.annotation.MatrixVariable;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.packt.naturebesttouch.domain.Product;
-import com.packt.naturebesttouch.domain.ProductSizePriceQuantity;
+//import com.packt.naturebesttouch.domain.ProductSizePriceQuantity;
 import com.packt.naturebesttouch.service.ProductService;
 
 @Controller
@@ -139,38 +144,78 @@ public class ProductController {
 
 	// http://localhost:8080/naturebesttouch/market/products/add
 	@RequestMapping(value = "/products/add", method = RequestMethod.POST)
-	public String processAddNewProductForm(@ModelAttribute("newProduct") Product newProduct, BindingResult result) {
+	public String processAddNewProductForm(@ModelAttribute("newProduct") Product newProduct, BindingResult result,
+			HttpServletRequest request) {
+		
+		if (result.hasErrors()) {
+			return "addProduct";
+		}
+		
 		// productService.addProduct(newProduct);
 		String[] suppressedFields = result.getSuppressedFields();
 		if (suppressedFields.length > 0) {
 			throw new RuntimeException("Attempting to bind disallowed fields: "
 					+ StringUtils.arrayToCommaDelimitedString(suppressedFields));
 		}
-		String url = String.format("redirect:/market/product/addSPQ?id=%s", productService.addProduct(newProduct));
+		
+		String newlyAddedProductId = productService.addProduct(newProduct);
+		// adding a image to a product
+		MultipartFile productImage = newProduct.getProductImage();
+		String rootDirectory = request.getSession().getServletContext().getRealPath("/");
+//		C:\FOR_STUDENT\STS Workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\naturebesttouch\
+		if (productImage != null && !productImage.isEmpty()) {
+			try {
+				// looking fot the file path
+				String pathFile = rootDirectory + "resources\\images\\" + newlyAddedProductId + ".jpg";
+//				C:\FOR_STUDENT\STS Workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\naturebesttouch\resources\images\1252.jpg
+//				productImage.transferTo(new File(rootDirectory + "resources\\images\\" + newProduct.getProductId() + ".jpg"));
+				productImage.transferTo(new File(pathFile));
+			} catch (Exception e) {
+				throw new RuntimeException("Product Image saving failed", e);
+			}
+		}
+
+		// MultipartFile productImage = productToBeAdded.getProductImage();
+		// String rootDirectory =
+		// request.getSession().getServletContext().getRealPath("/");
+		// if (productImage != null && !productImage.isEmpty()) {
+		// try {
+		// productImage.transferTo(
+		// new File(rootDirectory + "resources\\images\\" +
+		// productToBeAdded.getProductId() + ".jpg"));
+		// } catch (Exception e) {
+		// throw new RuntimeException("Product Image saving failed", e);
+		// }
+		// }
+
+		String url = String.format("redirect:/market/product/addSPQ?id=%s", newlyAddedProductId);
 		return url;
 		// return "redirect:/market/products";
 	}
 
-	// http://localhost:8080/naturebesttouch/market/product/addSPQ?id=1238
-	@RequestMapping(value = "/product/addSPQ", method = RequestMethod.GET)
-	public String getAddNewProductSPQForm(Model model, @RequestParam("id") String productId) {
-		model.addAttribute("product", productService.getProductById(productId));
-		ProductSizePriceQuantity newProductSPQ = new ProductSizePriceQuantity();
-		model.addAttribute("newProductSPQ", newProductSPQ);
-		return "addProductSPQ";
-	}
-
-	@RequestMapping(value = "/product/addSPQ", method = RequestMethod.POST)
-	public String processAddNewProductSPQForm(@ModelAttribute("newProductSPQ") ProductSizePriceQuantity newProductSPQ,
-			@RequestParam("id") String productId, BindingResult result) {
-		productService.addProductSPQ(newProductSPQ, productId);
-		String url = String.format("redirect:/market/product/addSPQ?id=%s", productId);
-		return url;
-		// return "redirect:/market/products";
-	}
+	// // http://localhost:8080/naturebesttouch/market/product/addSPQ?id=1238
+	// @RequestMapping(value = "/product/addSPQ", method = RequestMethod.GET)
+	// public String getAddNewProductSPQForm(Model model, @RequestParam("id") String
+	// productId) {
+	// model.addAttribute("product", productService.getProductById(productId));
+	// ProductSizePriceQuantity newProductSPQ = new ProductSizePriceQuantity();
+	// model.addAttribute("newProductSPQ", newProductSPQ);
+	// return "addProductSPQ";
+	// }
+	//
+	// @RequestMapping(value = "/product/addSPQ", method = RequestMethod.POST)
+	// public String processAddNewProductSPQForm(@ModelAttribute("newProductSPQ")
+	// ProductSizePriceQuantity newProductSPQ,
+	// @RequestParam("id") String productId, BindingResult result) {
+	// productService.addProductSPQ(newProductSPQ, productId);
+	// String url = String.format("redirect:/market/product/addSPQ?id=%s",
+	// productId);
+	// return url;
+	// // return "redirect:/market/products";
+	// }
 
 	@InitBinder
 	public void initialiseBinder(WebDataBinder binder) {
-		binder.setAllowedFields("name", "description", "category");
+		binder.setAllowedFields("name", "description", "category", "productImage");
 	}
 }

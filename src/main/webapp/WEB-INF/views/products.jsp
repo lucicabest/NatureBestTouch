@@ -23,8 +23,10 @@
 	<section class="container">
 		<div class="row">
 			<c:forEach items="${products}" var="product">
-				<div class="col-sm-6 col-md-3">
+				<div class="col-sm-6 col-md-3" style="padding-bottom: 15px; height: 630px;">
 					<div class="thumbnail">
+						<img src="<c:url value="/img/${product.productId}.jpg"></c:url>"
+							alt="image" style="width: 100%" />
 						<div class="caption">
 							<h3>${product.name}</h3>
 							<p>${product.description}</p>

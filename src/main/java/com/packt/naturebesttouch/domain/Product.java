@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class Product implements Serializable {
 
 	private static final long serialVersionUID = 656979300737590990L;
@@ -15,6 +17,7 @@ public class Product implements Serializable {
 	private String description;
 	// private String manufacturer;
 	private String category;
+	private MultipartFile productImage;
 	// private long unitsInStock;
 	// private long unitsInOrder;
 	// private boolean discontinued;
@@ -93,6 +96,8 @@ public class Product implements Serializable {
 		this.category = category;
 	}
 
+	
+	
 	// public long getUnitsInStock() {
 	// return unitsInStock;
 	// }
@@ -124,6 +129,14 @@ public class Product implements Serializable {
 	// public void setCondition(String condition) {
 	// this.condition = condition;
 	// }
+
+	public MultipartFile getProductImage() {
+		return productImage;
+	}
+
+	public void setProductImage(MultipartFile productImage) {
+		this.productImage = productImage;
+	}
 
 	@Override
 	public int hashCode() {
