@@ -4,8 +4,14 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@XmlRootElement
 public class Product implements Serializable {
 
 	private static final long serialVersionUID = 656979300737590990L;
@@ -17,7 +23,10 @@ public class Product implements Serializable {
 	private String description;
 	// private String manufacturer;
 	private String category;
+	@JsonIgnore
 	private MultipartFile productImage;
+	@JsonIgnore
+	private MultipartFile productDocumentation;
 	// private long unitsInStock;
 	// private long unitsInOrder;
 	// private boolean discontinued;
@@ -130,12 +139,22 @@ public class Product implements Serializable {
 	// this.condition = condition;
 	// }
 
+	@XmlTransient
 	public MultipartFile getProductImage() {
 		return productImage;
 	}
 
 	public void setProductImage(MultipartFile productImage) {
 		this.productImage = productImage;
+	}
+	
+	@XmlTransient
+	public MultipartFile getProductDocumentation() {
+		return productDocumentation;
+	}
+
+	public void setProductDocumentation(MultipartFile productDocumentation) {
+		this.productDocumentation = productDocumentation;
 	}
 
 	@Override

@@ -14,6 +14,12 @@
 </head>
 <body>
 	<section>
+	<div class="pull-right" style="padding-right: 50px">
+		<a href="?language=en">English</a>|<a href="?language=ro">Romana</a>
+		<a href="<c:url value="/logout" />">Logout</a>
+	</div>
+	</section>
+	<section>
 	<div class="jumbotron">
 		<div class="container">
 			<h1>
@@ -25,8 +31,9 @@
 		</div>
 	</div>
 	</section>
-	<section class="container"> 
-		<form:form method="POST" modelAttribute="newProduct" class="form-horizontal" enctype="multipart/form-data">
+	<section class="container"> <form:form method="POST"
+		modelAttribute="newProduct" class="form-horizontal"
+		enctype="multipart/form-data">
 		<fieldset>
 			<legend>
 				<spring:message code="addProduct.form.legend.label" />
@@ -75,6 +82,17 @@
 						class="form:input-large" />
 				</div>
 			</div>
+
+			<div class="form-group">
+				<label class="control-label col-lg-2" for="productDocumentation">
+					<spring:message code="addProduct.form.productDocumentation.label" />
+				</label>
+				<div class="col-lg-10">
+					<form:input id="productDocumentation" path="productDocumentation"
+						type="file" class="form:input-large" />
+				</div>
+			</div>
+
 
 			<div class="form-group">
 				<div class="col-lg-offset-2 col-lg-10">

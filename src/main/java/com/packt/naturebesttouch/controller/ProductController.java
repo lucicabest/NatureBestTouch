@@ -1,6 +1,7 @@
 package com.packt.naturebesttouch.controller;
 
 import java.io.File;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 //import org.springframework.web.bind.annotation.MatrixVariable;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,8 +25,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.packt.naturebesttouch.domain.Product;
+import com.packt.naturebesttouch.exception.NoProductsFoundUnderCategoryException;
+import com.packt.naturebesttouch.exception.ProductNotFoundException;
 //import com.packt.naturebesttouch.domain.ProductSizePriceQuantity;
 import com.packt.naturebesttouch.service.ProductService;
 
@@ -72,7 +77,11 @@ public class ProductController {
 	// http://localhost:8080/webstore/market/products/Tablet
 	@RequestMapping("/products/{category}")
 	public String getProductsByCategory(Model model, @PathVariable("category") String productCategory) {
-		model.addAttribute("products", productService.getProductsByCategory(productCategory));
+		List<Product> products = productService.getProductsByCategory(productCategory);
+		if (products == null || products.isEmpty()) {
+			throw new NoProductsFoundUnderCategoryException();
+		}
+		model.addAttribute("products", products);
 		return "products";
 	}
 
@@ -97,6 +106,16 @@ public class ProductController {
 	public String getProductsById(Model model, @RequestParam("id") String productId) {
 		model.addAttribute("product", productService.getProductById(productId));
 		return "product";
+	}
+
+	@ExceptionHandler(ProductNotFoundException.class)
+	public ModelAndView handleError(HttpServletRequest req, ProductNotFoundException exception) {
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("invalidProductId", exception.getProductId());
+		mav.addObject("exception", exception);
+		mav.addObject("url", req.getRequestURL() + "?" + req.getQueryString());
+		mav.setViewName("productNotFound");
+		return mav;
 	}
 
 	// http://localhost:8080/webstore/productss?category=laptop&price=700
@@ -146,32 +165,50 @@ public class ProductController {
 	@RequestMapping(value = "/products/add", method = RequestMethod.POST)
 	public String processAddNewProductForm(@ModelAttribute("newProduct") Product newProduct, BindingResult result,
 			HttpServletRequest request) {
-		
-		if (result.hasErrors()) {
-			return "addProduct";
-		}
-		
+
+		// if (result.hasErrors()) {
+		// return "addProduct";
+		// }
+
 		// productService.addProduct(newProduct);
 		String[] suppressedFields = result.getSuppressedFields();
 		if (suppressedFields.length > 0) {
 			throw new RuntimeException("Attempting to bind disallowed fields: "
 					+ StringUtils.arrayToCommaDelimitedString(suppressedFields));
 		}
-		
+
 		String newlyAddedProductId = productService.addProduct(newProduct);
 		// adding a image to a product
 		MultipartFile productImage = newProduct.getProductImage();
+		MultipartFile productDocumentation = newProduct.getProductDocumentation();
 		String rootDirectory = request.getSession().getServletContext().getRealPath("/");
-//		C:\FOR_STUDENT\STS Workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\naturebesttouch\
+		// C:\FOR_STUDENT\STS
+		// Workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\naturebesttouch\
 		if (productImage != null && !productImage.isEmpty()) {
 			try {
 				// looking fot the file path
 				String pathFile = rootDirectory + "resources\\images\\" + newlyAddedProductId + ".jpg";
-//				C:\FOR_STUDENT\STS Workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\naturebesttouch\resources\images\1252.jpg
-//				productImage.transferTo(new File(rootDirectory + "resources\\images\\" + newProduct.getProductId() + ".jpg"));
+				// C:\FOR_STUDENT\STS
+				// Workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\naturebesttouch\resources\images\1252.jpg
+				// productImage.transferTo(new File(rootDirectory + "resources\\images\\" +
+				// newProduct.getProductId() + ".jpg"));
 				productImage.transferTo(new File(pathFile));
 			} catch (Exception e) {
 				throw new RuntimeException("Product Image saving failed", e);
+			}
+		}
+
+		if (productDocumentation != null && !productDocumentation.isEmpty()) {
+			try {
+				// looking fot the file path
+				String pathDocumentation = rootDirectory + "resources\\pdf\\" + newlyAddedProductId + ".pdf";
+				// C:\FOR_STUDENT\STS
+				// Workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\naturebesttouch\resources\images\1252.jpg
+				// productImage.transferTo(new File(rootDirectory + "resources\\images\\" +
+				// newProduct.getProductId() + ".jpg"));
+				productDocumentation.transferTo(new File(pathDocumentation));
+			} catch (Exception e) {
+				throw new RuntimeException("Product Documentation saving failed", e);
 			}
 		}
 
@@ -216,6 +253,12 @@ public class ProductController {
 
 	@InitBinder
 	public void initialiseBinder(WebDataBinder binder) {
-		binder.setAllowedFields("name", "description", "category", "productImage");
+		binder.setAllowedFields("name", "description", "category", "productImage", "productDocumentation", "language");
 	}
+	
+	@RequestMapping("/products/invalidPromoCode")
+	public String invalidPromoCode() {
+	return "invalidPromoCode";
+	}
+	
 }
