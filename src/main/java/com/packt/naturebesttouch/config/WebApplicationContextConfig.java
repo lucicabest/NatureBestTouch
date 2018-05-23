@@ -89,6 +89,7 @@ public class WebApplicationContextConfig extends WebMvcConfigurerAdapter {
 		return resolver;
 	}
 
+//	http://localhost:8080/naturebesttouch/market/product.json?id=P1235
 	@Bean
 	public MappingJackson2JsonView jsonView() {
 		MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
@@ -96,6 +97,7 @@ public class WebApplicationContextConfig extends WebMvcConfigurerAdapter {
 		return jsonView;
 	}
 
+//	http://localhost:8080/naturebesttouch/market/product.xml?id=P1235.
 	@Bean
 	public MarshallingView xmlView() {
 		Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
