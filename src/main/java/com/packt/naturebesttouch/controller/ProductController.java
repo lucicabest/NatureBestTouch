@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 //import java.util.List;
 //import java.util.Map;
@@ -163,12 +164,18 @@ public class ProductController {
 
 	// http://localhost:8080/naturebesttouch/market/products/add
 	@RequestMapping(value = "/products/add", method = RequestMethod.POST)
-	public String processAddNewProductForm(@ModelAttribute("newProduct") Product newProduct, BindingResult result,
-			HttpServletRequest request) {
+	public String processAddNewProductForm(@ModelAttribute("newProduct") @Valid Product newProduct,
+			BindingResult result, HttpServletRequest request) {
 
-		// if (result.hasErrors()) {
-		// return "addProduct";
-		// }
+		// [Field error in object 'newProduct' on field 'name': rejected value [asd];
+		// codes [Size.newProduct.name,Size.name,Size.java.lang.String,Size]; arguments
+		// [org.springframework.context.support.DefaultMessageSourceResolvable: codes
+		// [newProduct.name,name]; arguments []; default message [name],50,4]; default
+		// message [Invalid product name. It should be minimum 4 characters to maximum
+		// 50 characters long.]]
+		if (result.hasErrors()) {
+			return "addProduct";
+		}
 
 		// productService.addProduct(newProduct);
 		String[] suppressedFields = result.getSuppressedFields();
@@ -225,7 +232,7 @@ public class ProductController {
 		// }
 		// }
 
-		String url = String.format("redirect:/market/product/addSPQ?id=%s", newlyAddedProductId);
+		String url = String.format("redirect:/market/product/%s/addSPQ", newlyAddedProductId);
 		return url;
 		// return "redirect:/market/products";
 	}
@@ -255,10 +262,10 @@ public class ProductController {
 	public void initialiseBinder(WebDataBinder binder) {
 		binder.setAllowedFields("name", "description", "category", "productImage", "productDocumentation", "language");
 	}
-	
+
 	@RequestMapping("/products/invalidPromoCode")
 	public String invalidPromoCode() {
-	return "invalidPromoCode";
+		return "invalidPromoCode";
 	}
-	
+
 }

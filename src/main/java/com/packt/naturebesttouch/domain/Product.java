@@ -4,24 +4,31 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.packt.naturebesttouch.validator.Category;
 
 @XmlRootElement
 public class Product implements Serializable {
 
 	private static final long serialVersionUID = 656979300737590990L;
 
+	// @Pattern(regexp = "P[1-9]+", message =
+	// "{Pattern.Product.productId.validation}")
 	private String productId;
+	@Size(min = 4, max = 50, message = "{Size.Product.name.validation}")
 	private String name;
 	private List<ProductSizePriceQuantity> unitSPQ;
 	// private BigDecimal unitPrice;
 	private String description;
 	// private String manufacturer;
+	@Category
 	private String category;
 	@JsonIgnore
 	private MultipartFile productImage;
@@ -105,8 +112,6 @@ public class Product implements Serializable {
 		this.category = category;
 	}
 
-	
-	
 	// public long getUnitsInStock() {
 	// return unitsInStock;
 	// }
@@ -147,7 +152,7 @@ public class Product implements Serializable {
 	public void setProductImage(MultipartFile productImage) {
 		this.productImage = productImage;
 	}
-	
+
 	@XmlTransient
 	public MultipartFile getProductDocumentation() {
 		return productDocumentation;

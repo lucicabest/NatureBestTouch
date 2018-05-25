@@ -31,9 +31,9 @@
 		</div>
 	</div>
 	</section>
-	<section class="container"> <form:form method="POST"
-		modelAttribute="newProduct" class="form-horizontal"
-		enctype="multipart/form-data">
+	<section class="container"> 
+		<form:form method="POST" modelAttribute="newProduct" class="form-horizontal" enctype="multipart/form-data">
+		<form:errors path="*" cssClass="alert alert-danger" element="div"/>
 		<fieldset>
 			<legend>
 				<spring:message code="addProduct.form.legend.label" />
@@ -53,6 +53,7 @@
 				<div class="col-lg-10">
 					<form:input id="name" path="name" type="text"
 						class="form:input-large" />
+					<form:errors path="name" cssClass="text-danger"/>
 				</div>
 			</div>
 

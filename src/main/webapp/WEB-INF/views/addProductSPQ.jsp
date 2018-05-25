@@ -54,10 +54,16 @@
 	</div>
 	</section>
 
-	<section class="container"> <form:form method="POST"
-		modelAttribute="newProductSPQ" class="form-horizontal">
+	<section class="container"> 
+		<form:form method="POST" modelAttribute="newProductSPQ" class="form-horizontal">
+		<form:errors path="*" cssClass="alert alert-danger" element="div"/>
 		<fieldset>
+								
 			<legend><spring:message code="addProductSPQ.form.legend.label"/></legend>
+			
+			
+			
+			
 			<%-- <div class="form-group">
 				<label class="control-label col-lg-2 col-lg-2" for="productId">Product
 					Id</label>
@@ -66,6 +72,8 @@
 						class="form:input-large" />
 				</div>
 			</div> --%>
+
+			<form:input id="productId" value="${product.productId}" path="productId" type="hidden" />
 
 			<div class="form-group">
 				<label class="control-label col-lg-2" for="size">Size</label>
@@ -84,8 +92,8 @@
 			<div class="form-group">
 				<label class="control-label col-lg-2 col-lg-2" for="price"><spring:message code="addProductSPQ.form.price.label"/></label>
 				<div class="col-lg-10">
-					<form:input id="price" path="price" type="text"
-						class="form:input-large" />
+					<form:input id="price" path="price" type="text"	class="form:input-large" />
+					<form:errors path="price" cssClass="text-danger"/>
 				</div>
 			</div>
 
