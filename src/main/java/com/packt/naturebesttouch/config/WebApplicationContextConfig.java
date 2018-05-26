@@ -1,8 +1,11 @@
 package com.packt.naturebesttouch.config;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -33,6 +36,10 @@ import org.springframework.web.servlet.view.xml.MarshallingView;
 import org.springframework.web.util.UrlPathHelper;
 
 import com.packt.naturebesttouch.domain.Product;
+import com.packt.naturebesttouch.service.ProductService;
+import com.packt.naturebesttouch.validator.CorectPricePerSizeValidator;
+import com.packt.naturebesttouch.validator.ExistingSizePriceValidator;
+import com.packt.naturebesttouch.validator.ProductSPQValidator;
 import com.packt.webstore.interceptor.ProcessingTimeLogInterceptor;
 import com.packt.webstore.interceptor.PromoCodeInterceptor;
 
@@ -41,6 +48,12 @@ import com.packt.webstore.interceptor.PromoCodeInterceptor;
 @ComponentScan("com.packt.naturebesttouch")
 public class WebApplicationContextConfig extends WebMvcConfigurerAdapter {
 
+	@Autowired
+	private ExistingSizePriceValidator existingSizePriceValidator;
+	
+	@Autowired
+	private CorectPricePerSizeValidator corectPricePerSizeValidator;
+	
 	@Override
 	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
 		configurer.enable();
@@ -125,6 +138,16 @@ public class WebApplicationContextConfig extends WebMvcConfigurerAdapter {
 		promoCodeInterceptor.setOfferRedirect("market/products");
 		promoCodeInterceptor.setErrorRedirect("invalidPromoCode");
 		return promoCodeInterceptor;
+	}
+
+	@Bean
+	public ProductSPQValidator productSPQValidator() {
+		Set<Validator> springValidators = new HashSet<>();
+		springValidators.add(existingSizePriceValidator);
+		springValidators.add(corectPricePerSizeValidator);
+		ProductSPQValidator productSPQValidator = new ProductSPQValidator();
+		productSPQValidator.setSpringValidators(springValidators);
+		return productSPQValidator;
 	}
 
 	@Override

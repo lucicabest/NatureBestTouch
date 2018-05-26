@@ -4,3 +4,7 @@ look for commands https://www.git-tower.com/blog/git-cheat-sheet
 
 git init
 git gui
+
+
+
+5/25 was able to make the Size already exist Validator by hacking the boolean supports function of the validator because of the 2 models in the addSPQ page 
