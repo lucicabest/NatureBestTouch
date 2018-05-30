@@ -47,10 +47,11 @@
 				<strong><spring:message code="product.form.category.label" /></strong>
 				: ${product.category}
 			</p>
-			<c:forEach items="${product.unitSPQ}" var="product_unitSPQ">
-				<%--	<section class="container"> <form:form method="POST"
-					modelAttribute="newProduct" class="form-horizontal">
-					<div class="form-group">
+<%--			<section class="container"> <form:form method="POST"
+				modelAttribute="productSPQ" class="form-horizontal"> --%>
+				<c:forEach items="${product.unitSPQ}" var="product_unitSPQ">
+
+<%--					<div class="form-group">
 
 						<label class="control-label col-lg-2" for="condition">Condition</label>
 						<div class="col-lg-10">
@@ -62,17 +63,18 @@
 							Refurbished
 						</div>
 					</div>
-				</form:form> </section>
 --%>
-				<div class="col-ms-6">
-					<p>
-						<strong><spring:message code="product.form.size.label" /></strong>
-						${product_unitSPQ.size}oz .................
-						${product_unitSPQ.price}$ ..... ${product_unitSPQ.unitsInStock}
-						<spring:message code="product.form.available.label" />
-					</p>
-				</div>
-			</c:forEach>
+
+					<div class="col-ms-6">
+						<p>
+							<strong><spring:message code="product.form.size.label" /></strong>
+							${product_unitSPQ.size}oz .................
+							${product_unitSPQ.price}$ ..... ${product_unitSPQ.unitsInStock}
+							<spring:message code="product.form.available.label" />
+						</p>
+					</div>
+				</c:forEach>
+<%--			</form:form> </section> --%>
 			<%-- <p>
 				<strong>Available units in stock </strong> : ${product.unitsInStock}
 			</p>
