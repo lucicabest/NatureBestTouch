@@ -2,6 +2,7 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -47,34 +48,30 @@
 				<strong><spring:message code="product.form.category.label" /></strong>
 				: ${product.category}
 			</p>
-<%--			<section class="container"> <form:form method="POST"
-				modelAttribute="productSPQ" class="form-horizontal"> --%>
+			<section class="container"> <form:form method="POST" class="form-horizontal">
+				<label class="control-label col-lg-2" for="productSPQId">&emsp;&emsp;<strong><spring:message
+							code="product.form.size.label" /></strong>&emsp;&emsp;&emsp;&emsp;&emsp;<strong>Price</strong>&emsp;&emsp;&emsp;<strong>Available</strong></label>
 				<c:forEach items="${product.unitSPQ}" var="product_unitSPQ">
 
-<%--					<div class="form-group">
+					<div class="form-group">
 
-						<label class="control-label col-lg-2" for="condition">Condition</label>
+
 						<div class="col-lg-10">
-							<form:radiobutton path="condition" value="New" />
-							New
-							<form:radiobutton path="condition" value="Old" />
-							Old
-							<form:radiobutton path="condition" value="Refurbished" />
-							Refurbished
+							<input type="radio" name="productSPQId" value="${product_unitSPQ.priceId}"/>&emsp;&emsp;${product_unitSPQ.size}oz.................${product_unitSPQ.price}$ .............. ${product_unitSPQ.unitsInStock}
 						</div>
 					</div>
---%>
 
-					<div class="col-ms-6">
+
+					<%-- 					<div class="col-ms-6">
 						<p>
 							<strong><spring:message code="product.form.size.label" /></strong>
 							${product_unitSPQ.size}oz .................
 							${product_unitSPQ.price}$ ..... ${product_unitSPQ.unitsInStock}
 							<spring:message code="product.form.available.label" />
 						</p>
-					</div>
+					</div>  --%>
 				</c:forEach>
-<%--			</form:form> </section> --%>
+			</form:form> </section>
 			<%-- <p>
 				<strong>Available units in stock </strong> : ${product.unitsInStock}
 			</p>
@@ -86,12 +83,23 @@
 					class="glyphicon-hand-left glyphicon"></span> <spring:message
 						code="product.form.back.label" />
 				</a> <a href="#" class="btn btn-warning btn-large"
-					ng-click="addToCart('${product.productId}')"><span
+					ng-click="addToCart('${productSPQId}')"><span
 					class="glyphicon-shopping-cart glyphicon"> </span> <spring:message
 						code="product.form.orderNow.label" /> </a> <a
 					href="<spring:url value="/cart" />" class="btn btn-default"> <span
 					class="glyphicon-hand-right glyphicon"></span> View Cart
 				</a>
+
+				<%--
+				
+				<div class="form-group">
+					<div class="col-lg-offset-2 col-lg-10">
+						<input type="submit" id="btnAdd" class="btn
+							btn-primary" value ="Add"/>
+					</div>
+				</div>
+				
+				 --%>
 			</p>
 		</div>
 	</div>

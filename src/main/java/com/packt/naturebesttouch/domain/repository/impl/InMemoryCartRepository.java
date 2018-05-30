@@ -97,14 +97,15 @@ public class InMemoryCartRepository implements CartRepository {
 	}
 
 	@Override
-	public void addItem(String cartId, String productId) {
+	public void addItem(String cartId, String productSPQId) {
+		System.out.println("In addItem cart cu cartId: " + cartId + " and productSPQId: " + productSPQId);
 		String SQL = null;
 		Cart cart = null;
 		cart = read(cartId);
 		if (cart == null) {
 			CartItemDto newCartItemDto = new CartItemDto();
-			newCartItemDto.setId(cartId + productId);
-			newCartItemDto.setProductSPQId(productId);
+			newCartItemDto.setId(cartId + productSPQId);
+			newCartItemDto.setProductSPQId(productSPQId);
 			newCartItemDto.setQuantity(1);
 			CartDto newCartDto = new CartDto(cartId);
 			newCartDto.addCartItem(newCartItemDto);
@@ -112,17 +113,17 @@ public class InMemoryCartRepository implements CartRepository {
 			return;
 		}
 		Map<String, Object> cartItemsParams = new HashMap<String, Object>();
-		if (cart.getItemByProductSPQId(productId) == null) {
-			SQL = "INSERT INTO CART_ITEM (ID, PRODUCT_ID, CART_ID, QUANTITY) VALUES (:id, :productId, :cartId, :quantity)";
-			cartItemsParams.put("id", cartId + productId);
+		if (cart.getItemByProductSPQId(productSPQId) == null) {
+			SQL = "INSERT INTO CART_ITEM (ID, PRODUCT_ID, CART_ID, QUANTITY) VALUES (:id, :productSPQId, :cartId, :quantity)";
+			cartItemsParams.put("id", cartId + productSPQId);
 			cartItemsParams.put("quantity", 1);
 		} else {
-			SQL = "UPDATE CART_ITEM SET QUANTITY = :quantity WHERE CART_ID = :cartId AND PRODUCT_ID = :productId";
-			CartItem existingItem = cart.getItemByProductSPQId(productId);
+			SQL = "UPDATE CART_ITEM SET QUANTITY = :quantity WHERE CART_ID = :cartId AND PRODUCT_PRICE_ID = :productSPQId";
+			CartItem existingItem = cart.getItemByProductSPQId(productSPQId);
 			cartItemsParams.put("id", existingItem.getId());
 			cartItemsParams.put("quantity", existingItem.getQuantity() + 1);
 		}
-		cartItemsParams.put("productId", productId);
+		cartItemsParams.put("productSPQId", productSPQId);
 		cartItemsParams.put("cartId", cartId);
 		jdbcTempleate.update(SQL, cartItemsParams);
 	}

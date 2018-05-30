@@ -49,6 +49,7 @@ public class CartRestController {
 	@RequestMapping(value = "/add/{productId}", method = RequestMethod.PUT)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void addItem(@PathVariable String productId, HttpSession session) {
+		System.out.println("In addItem cart cu cartId: " + session.getId() + " and productSPQId: " + productId);
 		cartService.addItem(session.getId(), productId);
 	}
 
