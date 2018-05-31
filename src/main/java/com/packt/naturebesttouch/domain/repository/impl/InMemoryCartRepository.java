@@ -46,13 +46,13 @@ public class InMemoryCartRepository implements CartRepository {
 		
 		cartDto.getCartItems().stream().forEach(cartItemDto -> {
 			ProductSizePriceQuantity productSPQById = productSPQService.getProductSPQById(cartItemDto.getProductSPQId());
-			String INSERT_CART_ITEM_SQL = "INSERT INTO CART_ITEM(ID, PRODUCT_PRICE_ID, CART_ID, QUANTITY) "
+			String INSERT_CART_ITEM_SQL = "INSERT INTO CART_ITEM (ID, PRODUCT_PRICE_ID, CART_ID, QUANTITY) "
 					+ "VALUES (:id, :product_price_id, :cart_id, :quantity)";
 			Map<String, Object> cartItemsParams = new HashMap<String, Object>();
 			System.out.println("cartItemDto.getId(): " + cartItemDto.getId());
 			cartItemsParams.put("id", cartItemDto.getId());
-			System.out.println("productSPQById.getProductId()" + productSPQById.getProductId());
-			cartItemsParams.put("product_price_id", productSPQById.getProductId());
+			System.out.println("productSPQById.getPriceId()" + productSPQById.getPriceId());
+			cartItemsParams.put("product_price_id", productSPQById.getPriceId());
 			System.out.println("cartDto.getId() " + cartDto.getId());
 			cartItemsParams.put("cart_id", cartDto.getId());
 			System.out.println("cartItemDto.getQuantity() " + cartItemDto.getQuantity());
