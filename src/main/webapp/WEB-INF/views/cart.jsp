@@ -10,7 +10,7 @@
 	href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.1/angular.min.js"></script>
-<script src="/webstore/resources/js/controllers.js"></script>
+<script src="/naturebesttouch/resources/js/controllers.js"></script>
 
 <title>Cart</title>
 </head>
@@ -36,20 +36,23 @@
 			<tr>
 				<th>Product</th>
 				<th>Unit price</th>
+				<th>Size</th>
 				<th>Quantity</th>
 				<th>Price</th>
 				<th>Action</th>
 			</tr>
 			<tr ng-repeat="item in cart.cartItems">
-				<td>{{item.product.productId}}- {{item.product.name}}</td>
-				<td>{{item.product.unitPrice}}</td>
+				<td>{{item.productSPQ.priceId}}- {{item.productSPQ.productId}}</td>
+				<td>{{item.productSPQ.price}}</td>
+				<td>{{item.productSPQ.size}} oz</td>
 				<td>{{item.quantity}}</td>
 				<td>{{item.totalPrice}}</td>
-				<td><a href="#" class="label label-danger"	ng-click="removeFromCart(item.product.productId)"> <span
+				<td><a href="#" class="label label-danger"	ng-click="removeFromCart(item.productSPQ.priceId)"> <span
 						class="glyphicon glyphicon-remove" /></span> Remove
 				</a></td>
 			</tr>
 			<tr>
+				<th></th>
 				<th></th>
 				<th></th>
 				<th>Grand Total</th>

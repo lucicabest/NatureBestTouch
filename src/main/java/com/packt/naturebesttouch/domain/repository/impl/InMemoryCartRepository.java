@@ -29,34 +29,37 @@ public class InMemoryCartRepository implements CartRepository {
 	private ProductSPQService productSPQService;
 
 	public void create(CartDto cartDto) {
-//		String INSERT_CART_SQL = "INSERT INTO CART(ID) VALUES (:id)";
+		String INSERT_CART_SQL = "INSERT INTO CART(ID) VALUES (:id)";
 		
-		KeyHolder keyHolder = new GeneratedKeyHolder();
+//		KeyHolder keyHolder = new GeneratedKeyHolder();
 		
 //		jdbcTemplate.update(SQL, new MapSqlParameterSource(params), keyHolder);
 		
 //		keyHolder.getKey().toString();
 		
-		String INSERT_CART_SQL = "INSERT INTO CART() VALUES ()";
+//		String INSERT_CART_SQL = "INSERT INTO CART() VALUES ()";
 		Map<String, Object> cartParams = new HashMap<String, Object>();
-//		cartParams.put("id", cartDto.getId());
-//		jdbcTempleate.update(INSERT_CART_SQL, cartParams);
-		jdbcTempleate.update(INSERT_CART_SQL, new MapSqlParameterSource(cartParams), keyHolder);
-		cartDto.setId(keyHolder.getKey().toString());
+		cartParams.put("id", cartDto.getId());
+		jdbcTempleate.update(INSERT_CART_SQL, cartParams);
+//		jdbcTempleate.update(INSERT_CART_SQL, new MapSqlParameterSource(cartParams), keyHolder);
+//		cartDto.setId(keyHolder.getKey().toString());
 		
 		cartDto.getCartItems().stream().forEach(cartItemDto -> {
 			ProductSizePriceQuantity productSPQById = productSPQService.getProductSPQById(cartItemDto.getProductSPQId());
-			String INSERT_CART_ITEM_SQL = "INSERT INTO CART_ITEM(PRODUCT_PRICE_ID,CART_ID,QUANTITY) "
-					+ "VALUES (:product_id, :cart_id, :quantity)";
+			String INSERT_CART_ITEM_SQL = "INSERT INTO CART_ITEM(ID, PRODUCT_PRICE_ID, CART_ID, QUANTITY) "
+					+ "VALUES (:id, :product_price_id, :cart_id, :quantity)";
 			Map<String, Object> cartItemsParams = new HashMap<String, Object>();
-//			cartItemsParams.put("id", cartItemDto.getId());
-			cartItemsParams.put("product_id", productSPQById.getProductId());
+			System.out.println("cartItemDto.getId(): " + cartItemDto.getId());
+			cartItemsParams.put("id", cartItemDto.getId());
+			System.out.println("productSPQById.getProductId()" + productSPQById.getProductId());
+			cartItemsParams.put("product_price_id", productSPQById.getProductId());
+			System.out.println("cartDto.getId() " + cartDto.getId());
 			cartItemsParams.put("cart_id", cartDto.getId());
+			System.out.println("cartItemDto.getQuantity() " + cartItemDto.getQuantity());
 			cartItemsParams.put("quantity", cartItemDto.getQuantity());
 			
-			KeyHolder keyHolder2 = new GeneratedKeyHolder();
-			jdbcTempleate.update(INSERT_CART_ITEM_SQL, new MapSqlParameterSource(cartItemsParams), keyHolder2);
-			cartItemDto.setId(keyHolder2.getKey().toString());
+			jdbcTempleate.update(INSERT_CART_ITEM_SQL, cartItemsParams);
+			
 		});
 	}
 
@@ -76,7 +79,7 @@ public class InMemoryCartRepository implements CartRepository {
 	public void update(String id, CartDto cartDto) {
 		List<CartItemDto> cartItems = cartDto.getCartItems();
 		for (CartItemDto cartItem : cartItems) {
-			String SQL = "UPDATE CART_ITEM SET QUANTITY= :quantity, PRODUCT_ID = :productId WHERE ID = :id AND CART_ID = :cartId";
+			String SQL = "UPDATE CART_ITEM SET QUANTITY= :quantity, PRODUCT_PRICE_ID = :productId WHERE ID = :id AND CART_ID = :cartId";
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("id", cartItem.getId());
 			params.put("quantity", cartItem.getQuantity());
@@ -114,7 +117,7 @@ public class InMemoryCartRepository implements CartRepository {
 		}
 		Map<String, Object> cartItemsParams = new HashMap<String, Object>();
 		if (cart.getItemByProductSPQId(productSPQId) == null) {
-			SQL = "INSERT INTO CART_ITEM (ID, PRODUCT_ID, CART_ID, QUANTITY) VALUES (:id, :productSPQId, :cartId, :quantity)";
+			SQL = "INSERT INTO CART_ITEM (ID, PRODUCT_PRICE_ID, CART_ID, QUANTITY) VALUES (:id, :productSPQId, :cartId, :quantity)";
 			cartItemsParams.put("id", cartId + productSPQId);
 			cartItemsParams.put("quantity", 1);
 		} else {
@@ -130,7 +133,7 @@ public class InMemoryCartRepository implements CartRepository {
 
 	@Override
 	public void removeItem(String cartId, String productId) {
-		String SQL_DELETE_CART_ITEM = "DELETE FROM CART_ITEM WHERE PRODUCT_ID = :productId AND CART_ID = :id";
+		String SQL_DELETE_CART_ITEM = "DELETE FROM CART_ITEM WHERE PRODUCT_PRICE_ID = :productId AND CART_ID = :id";
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", cartId);
 		params.put("productId", productId);

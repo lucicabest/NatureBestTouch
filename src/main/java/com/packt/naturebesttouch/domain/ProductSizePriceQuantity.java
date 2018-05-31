@@ -6,22 +6,30 @@ import java.math.BigDecimal;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+//import com.packt.naturebesttouch.service.ProductSPQService;
+import com.packt.naturebesttouch.service.ProductService;
 //import javax.validation.constraints.Pattern;
 
 //import com.packt.naturebesttouch.validator.SizePQ;
-
 
 public class ProductSizePriceQuantity implements Serializable {
 
 	private static final long serialVersionUID = 3690392531428509119L;
 
+	@Autowired
+	ProductService productService;
+
 	private String priceId;
-	
+
 	private String productId;
 
-	//	@SizePQ
+	// @SizePQ
 	private float size;
-//	@Pattern(regexp="[1-9]+", message="{Pattern.ProductSizePriceQuantity.price.validation}")
+	// @Pattern(regexp="[1-9]+",
+	// message="{Pattern.ProductSizePriceQuantity.price.validation}")
 	@Min(value = 0, message = "{Min.ProductSizePriceQuantity.price.validation}")
 	@Digits(integer = 8, fraction = 2, message = "{Digits.ProductSizePriceQuantity.price.validation}")
 	@NotNull(message = "{NotNull.ProductSizePriceQuantity.price.validation}")
@@ -60,7 +68,7 @@ public class ProductSizePriceQuantity implements Serializable {
 	public void setProductId(String productId) {
 		this.productId = productId;
 	}
-	
+
 	public float getSize() {
 		return size;
 	}
@@ -92,6 +100,11 @@ public class ProductSizePriceQuantity implements Serializable {
 	public void setUnitsInOrder(long unitsInOrder) {
 		this.unitsInOrder = unitsInOrder;
 	}
+
+//	public String getProductName() {
+//		System.out.println("productService.getProductById(productId).getName() : " + productService.getProductById(productId).getName());
+//		return productService.getProductById(productId).getName();
+//	}
 
 	@Override
 	public int hashCode() {

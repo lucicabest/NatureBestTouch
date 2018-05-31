@@ -11,7 +11,8 @@
 	href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
-<script src="/webstore/resources/js/controllers.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>	
+<script src="/naturebesttouch/resources/js/controllers.js"></script>
 <title><spring:message code="product.form.pageTitle.label" /></title>
 </head>
 <body>
@@ -48,7 +49,7 @@
 				<strong><spring:message code="product.form.category.label" /></strong>
 				: ${product.category}
 			</p>
-			<section class="container"> <form:form method="POST" class="form-horizontal">
+			<section class="container"> <form:form id="order" method="POST" class="form-horizontal">
 				<label class="control-label col-lg-2" for="productSPQId">&emsp;&emsp;<strong><spring:message
 							code="product.form.size.label" /></strong>&emsp;&emsp;&emsp;&emsp;&emsp;<strong>Price</strong>&emsp;&emsp;&emsp;<strong>Available</strong></label>
 				<c:forEach items="${product.unitSPQ}" var="product_unitSPQ">
@@ -77,13 +78,15 @@
 			</p>
 			<h4>${product.unitPrice}USD</h4>
 			<p> --%>
+			
+			
 			<p ng-controller="cartCtrl">
 				<a href="<spring:url value="/market/products" />"
 					class="btn btn-default"> <span
 					class="glyphicon-hand-left glyphicon"></span> <spring:message
 						code="product.form.back.label" />
 				</a> <a href="#" class="btn btn-warning btn-large"
-					ng-click="addToCart('${productSPQId}')"><span
+					ng-click="addToCart()"><span
 					class="glyphicon-shopping-cart glyphicon"> </span> <spring:message
 						code="product.form.orderNow.label" /> </a> <a
 					href="<spring:url value="/cart" />" class="btn btn-default"> <span

@@ -39,8 +39,8 @@ public class Cart implements Serializable {
 		this.cartItems = cartItems;
 	}
 
-	public CartItem getItemByProductSPQId(String productId) {
-		return cartItems.stream().filter(cartItem -> cartItem.getProductSPQ().getProductId().equals(productId))
+	public CartItem getItemByProductSPQId(String productSPQId) {
+		return cartItems.stream().filter(cartItem -> cartItem.getProductSPQ().getPriceId().equals(productSPQId))
 				.findAny().orElse(null);
 	}
 
