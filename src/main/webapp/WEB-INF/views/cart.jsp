@@ -42,7 +42,7 @@
 				<th>Action</th>
 			</tr>
 			<tr ng-repeat="item in cart.cartItems">
-				<td>{{item.productSPQ.priceId}}- {{item.productSPQ.productId}}</td>
+				<td>{{item.productSPQ.priceId}}- {{item.productSPQ.productName}}</td>
 				<td>{{item.productSPQ.price}}</td>
 				<td>{{item.productSPQ.size}} oz</td>
 				<td>{{item.quantity}}</td>

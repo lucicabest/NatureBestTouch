@@ -26,7 +26,11 @@ public class ProductMapper implements RowMapper<Product> {
 		String id = rs.getString("ID");
 		// Cart cart = new Cart(id);
 		System.out.println(id);
-		String SQL = String.format("SELECT * FROM PRICES WHERE PRODUCT_ID = '%s' ORDER BY SIZE", id);
+//		String SQL = String.format("SELECT * FROM PRICES WHERE PRODUCT_ID = '%s' ORDER BY SIZE", id);
+		
+//		select products.NAME, prices.ID, prices.PRODUCT_ID, prices.SIZE, prices.PRICE, prices.UNITS_IN_STOCK, prices.UNITS_IN_ORDER FROM products inner join prices ON products.ID = prices.PRODUCT_ID WHERE prices.PRODUCT_ID='1234';
+		
+		String SQL = String.format("SELECT PRODUCTS.NAME, PRICES.ID, PRICES.PRODUCT_ID, PRICES.SIZE, PRICES.PRICE, PRICES.UNITS_IN_STOCK, PRICES.UNITS_IN_ORDER FROM PRODUCTS INNER JOIN PRICES ON PRODUCTS.ID = PRICES.PRODUCT_ID WHERE PRICES.PRODUCT_ID = '%s' ORDER BY SIZE", id);
 		System.out.println(SQL);
 		System.out.println(jdbcTemplate);
 		List<ProductSizePriceQuantity> productsSPQ = jdbcTemplate.query(SQL, new ProductSizePriceQuantityMapper());

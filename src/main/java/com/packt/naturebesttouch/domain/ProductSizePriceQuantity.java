@@ -19,12 +19,14 @@ public class ProductSizePriceQuantity implements Serializable {
 
 	private static final long serialVersionUID = 3690392531428509119L;
 
-	@Autowired
-	ProductService productService;
-
+//	@Autowired
+//	ProductService productService;
+	
 	private String priceId;
 
+	
 	private String productId;
+	private String productName;
 
 	// @SizePQ
 	private float size;
@@ -69,6 +71,15 @@ public class ProductSizePriceQuantity implements Serializable {
 		this.productId = productId;
 	}
 
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	
 	public float getSize() {
 		return size;
 	}
@@ -101,10 +112,7 @@ public class ProductSizePriceQuantity implements Serializable {
 		this.unitsInOrder = unitsInOrder;
 	}
 
-//	public String getProductName() {
-//		System.out.println("productService.getProductById(productId).getName() : " + productService.getProductById(productId).getName());
-//		return productService.getProductById(productId).getName();
-//	}
+	
 
 	@Override
 	public int hashCode() {

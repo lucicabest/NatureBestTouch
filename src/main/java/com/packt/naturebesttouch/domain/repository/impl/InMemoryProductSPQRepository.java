@@ -22,7 +22,8 @@ public class InMemoryProductSPQRepository implements ProductSPQRepository{
 	@Override
 	public ProductSizePriceQuantity getProductSPQById(String productSPQID) {
 		// TODO Auto-generated method stub
-		String SQL = "SELECT * FROM PRICES WHERE ID =:id";
+//		String SQL = "SELECT * FROM PRODUCTS WHERE ID =:id";
+		String SQL = "SELECT PRODUCTS.NAME, PRICES.ID, PRICES.PRODUCT_ID, PRICES.SIZE, PRICES.PRICE, PRICES.UNITS_IN_STOCK, PRICES.UNITS_IN_ORDER FROM PRODUCTS INNER JOIN PRICES ON PRODUCTS.ID = PRICES.PRODUCT_ID WHERE PRICES.ID = :id ORDER BY SIZE";
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", productSPQID);
 		 try {
@@ -36,6 +37,7 @@ public class InMemoryProductSPQRepository implements ProductSPQRepository{
 	@Override
 	public Product getProductByProduct_Id(String product_ID) {
 		String SQL = "SELECT * FROM PRODUCTS WHERE ID =:id";
+//		String SQL = "SELECT PRODUCTS.NAME, PRICES.ID, PRICES.PRODUCT_ID, PRICES.SIZE, PRICES.PRICE, PRICES.UNITS_IN_STOCK, PRICES.UNITS_IN_ORDER FROM PRODUCTS INNER JOIN PRICES ON PRODUCTS.ID = PRICES.PRODUCT_ID WHERE PRICES.PRODUCT_ID = :id ORDER BY SIZE";
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", product_ID);
 		 try {

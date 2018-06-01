@@ -57,7 +57,8 @@ public class InMemoryProductRepository implements ProductRepository {
 
 			String id = rs.getString("ID");
 			// Cart cart = new Cart(id);
-			String SQL = String.format("SELECT * FROM PRICES WHERE PRODUCT_ID = '%s' ORDER BY SIZE", id);
+//			String SQL = String.format("SELECT * FROM PRICES WHERE PRODUCT_ID = '%s' ORDER BY SIZE", id);
+			String SQL = String.format("SELECT PRODUCTS.NAME, PRICES.ID, PRICES.PRODUCT_ID, PRICES.SIZE, PRICES.PRICE, PRICES.UNITS_IN_STOCK, PRICES.UNITS_IN_ORDER FROM PRODUCTS INNER JOIN PRICES ON PRODUCTS.ID = PRICES.PRODUCT_ID WHERE PRICES.PRODUCT_ID = '%s' ORDER BY SIZE", id);
 			List<ProductSizePriceQuantity> productsSPQ = jdbcTemplate.query(SQL, new ProductSizePriceQuantityMapper());
 			// cart.setCartItems(cartItems);
 			// return cart;
