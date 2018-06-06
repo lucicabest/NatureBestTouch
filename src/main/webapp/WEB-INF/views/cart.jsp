@@ -28,7 +28,8 @@
 		<div>
 			<a class="btn btn-danger pull-left" ng-click="clearCart()"> <span
 				class="glyphicon glyphicon-remove-sign"></span> Clear Cart
-			</a> <a href="#" class="btn btn-success pull-right"> <span
+			</a> <a href="<spring:url value="/checkout?cartId=${cartId}"/>"
+				class="btn btn-success pull-right"> <span
 				class="glyphicon-shopping-cart glyphicon"></span> Check out
 			</a>
 		</div>
@@ -42,12 +43,14 @@
 				<th>Action</th>
 			</tr>
 			<tr ng-repeat="item in cart.cartItems">
-				<td>{{item.productSPQ.priceId}}- {{item.productSPQ.productName}}</td>
+				<td>{{item.productSPQ.priceId}}-
+					{{item.productSPQ.productName}}</td>
 				<td>{{item.productSPQ.price}}</td>
 				<td>{{item.productSPQ.size}} oz</td>
 				<td>{{item.quantity}}</td>
 				<td>{{item.totalPrice}}</td>
-				<td><a href="#" class="label label-danger"	ng-click="removeFromCart(item.productSPQ.priceId)"> <span
+				<td><a href="#" class="label label-danger"
+					ng-click="removeFromCart(item.productSPQ.priceId)"> <span
 						class="glyphicon glyphicon-remove" /></span> Remove
 				</a></td>
 			</tr>
@@ -60,7 +63,8 @@
 				<th></th>
 			</tr>
 		</table>
-		<a href="<spring:url value="/market/products" />"class="btn btn-default"> <span
+		<a href="<spring:url value="/market/products" />"
+			class="btn btn-default"> <span
 			class="glyphicon-hand-left glyphicon"></span> Continue shopping
 		</a>
 	</div>

@@ -33,6 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			else {
 				auth.inMemoryAuthentication().withUser(user.getUsername()).password(user.getPassword()).roles("USER");
 			}
+			
 		}
 		
 //		auth.inMemoryAuthentication().withUser("john").password("pa55word").roles("USER");
@@ -42,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.formLogin().loginPage("/login").usernameParameter("userId").passwordParameter("password");
-		httpSecurity.formLogin().defaultSuccessUrl("/market/products/add").failureUrl("/login?error");
+		httpSecurity.formLogin().defaultSuccessUrl("/market/products").failureUrl("/login?error");
 		httpSecurity.logout().logoutSuccessUrl("/login?logout");
 		httpSecurity.exceptionHandling().accessDeniedPage("/login?accessDenied");
 		httpSecurity.authorizeRequests().antMatchers("/").permitAll().antMatchers("/**/add").access("hasRole('ADMIN')")

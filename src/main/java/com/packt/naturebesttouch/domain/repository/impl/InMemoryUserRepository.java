@@ -7,12 +7,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.packt.naturebesttouch.domain.User;
 import com.packt.naturebesttouch.domain.repository.UserRepository;
+import com.packt.naturebesttouch.exception.UserNotFoundException;
 
 @Repository
 public class InMemoryUserRepository implements UserRepository {
@@ -53,6 +55,20 @@ public class InMemoryUserRepository implements UserRepository {
 		params.put("password", user.getPassword());
 		params.put("isAdmin", user.isIs_admin());
 		jdbcTemplate.update(SQL, params);
+	}
+
+	@Override
+	public User getUserByUsername(String username) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		String SQL = "SELECT * FROM users WHERE USERNAME =:username";
+		params.put("username", username);
+			
+		try {
+		 return jdbcTemplate.queryForObject(SQL, params, new UserMapper());
+		 } catch (DataAccessException e) {
+		 throw new UserNotFoundException(username);
+		 }
+		
 	}
 
 }

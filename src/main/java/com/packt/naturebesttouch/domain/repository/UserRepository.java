@@ -9,5 +9,6 @@ public interface UserRepository {
 
 	List <User> getAllUsers();
 	void addUser(User user);
+	User getUserByUsername(String username);
 	
 }

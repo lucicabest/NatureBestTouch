@@ -20,8 +20,9 @@
 		</div>
 	</div>
 	</section>
-	<section class="container"> <form:form method="POST"
-		modelAttribute="newUser" class="form-horizontal">
+	<section class="container"> 
+		<form:form method="POST" modelAttribute="newUser" class="form-horizontal">
+		<form:errors path="*" cssClass="alert alert-danger" element="div"/>
 		<fieldset>
 			<legend><spring:message code="addUser.form.legend.label"/></legend>
 			<%-- <div class="form-group">
@@ -61,6 +62,7 @@
 				<div class="col-lg-10">
 					<form:input id="username" path="username" type="text"
 						class="form:input-large" />
+					<form:errors path="username" cssClass="text-danger"/>
 				</div>
 			</div>
 

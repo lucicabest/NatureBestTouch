@@ -30,22 +30,24 @@ public class InMemoryCartRepository implements CartRepository {
 
 	public void create(CartDto cartDto) {
 		String INSERT_CART_SQL = "INSERT INTO CART(ID) VALUES (:id)";
-		
-//		KeyHolder keyHolder = new GeneratedKeyHolder();
-		
-//		jdbcTemplate.update(SQL, new MapSqlParameterSource(params), keyHolder);
-		
-//		keyHolder.getKey().toString();
-		
-//		String INSERT_CART_SQL = "INSERT INTO CART() VALUES ()";
+
+		// KeyHolder keyHolder = new GeneratedKeyHolder();
+
+		// jdbcTemplate.update(SQL, new MapSqlParameterSource(params), keyHolder);
+
+		// keyHolder.getKey().toString();
+
+		// String INSERT_CART_SQL = "INSERT INTO CART() VALUES ()";
 		Map<String, Object> cartParams = new HashMap<String, Object>();
 		cartParams.put("id", cartDto.getId());
 		jdbcTempleate.update(INSERT_CART_SQL, cartParams);
-//		jdbcTempleate.update(INSERT_CART_SQL, new MapSqlParameterSource(cartParams), keyHolder);
-//		cartDto.setId(keyHolder.getKey().toString());
-		
+		// jdbcTempleate.update(INSERT_CART_SQL, new MapSqlParameterSource(cartParams),
+		// keyHolder);
+		// cartDto.setId(keyHolder.getKey().toString());
+
 		cartDto.getCartItems().stream().forEach(cartItemDto -> {
-			ProductSizePriceQuantity productSPQById = productSPQService.getProductSPQById(cartItemDto.getProductSPQId());
+			ProductSizePriceQuantity productSPQById = productSPQService
+					.getProductSPQById(cartItemDto.getProductSPQId());
 			String INSERT_CART_ITEM_SQL = "INSERT INTO CART_ITEM (ID, PRODUCT_PRICE_ID, CART_ID, QUANTITY) "
 					+ "VALUES (:id, :product_price_id, :cart_id, :quantity)";
 			Map<String, Object> cartItemsParams = new HashMap<String, Object>();
@@ -57,9 +59,9 @@ public class InMemoryCartRepository implements CartRepository {
 			cartItemsParams.put("cart_id", cartDto.getId());
 			System.out.println("cartItemDto.getQuantity() " + cartItemDto.getQuantity());
 			cartItemsParams.put("quantity", cartItemDto.getQuantity());
-			
+
 			jdbcTempleate.update(INSERT_CART_ITEM_SQL, cartItemsParams);
-			
+
 		});
 	}
 
@@ -139,4 +141,14 @@ public class InMemoryCartRepository implements CartRepository {
 		params.put("productId", productId);
 		jdbcTempleate.update(SQL_DELETE_CART_ITEM, params);
 	}
+
+	@Override
+	public void clearCart(String cartId) {
+		String SQL_DELETE_CART_ITEM = "DELETE FROM CART_ITEM WHERE CART_ID = :id";
+		Map<String, Object> params = new HashMap<>();
+		params.put("id", cartId);
+		jdbcTempleate.update(SQL_DELETE_CART_ITEM, params);
+
+	}
+
 }

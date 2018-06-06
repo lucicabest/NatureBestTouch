@@ -2,6 +2,8 @@ package com.packt.naturebesttouch.domain;
 
 import java.io.Serializable;
 
+import com.packt.naturebesttouch.validator.UserUsername;
+
 public class User implements Serializable{
 
 	private static final long serialVersionUID = -6045279631258395501L;
@@ -9,6 +11,7 @@ public class User implements Serializable{
 	private String userId;
 	private String firstName;
 	private String lastName;
+	@UserUsername
 	private String username;
 	private String password;
 	private String email;
