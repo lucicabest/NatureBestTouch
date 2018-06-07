@@ -6,7 +6,7 @@ public class Order implements Serializable{
 
 	private static final long serialVersionUID = -7374804205003336218L;
 
-	private Long orderId;
+	private String orderId;
 	private Cart cart;
 	private Customer customer;
 	private ShippingDetail shippingDetail;
@@ -16,11 +16,11 @@ public class Order implements Serializable{
 		this.shippingDetail = new ShippingDetail();
 	}
 
-	public Long getOrderId() {
+	public String getOrderId() {
 		return orderId;
 	}
 
-	public void setOrderId(Long orderId) {
+	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
 

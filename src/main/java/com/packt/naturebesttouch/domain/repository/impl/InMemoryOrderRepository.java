@@ -35,7 +35,7 @@ public class InMemoryOrderRepository implements OrderRepository {
 
 	@Override
 	public long saveOrder(Order order) {
-		Long customerId = saveCustomer(order.getCustomer());
+		String customerId = saveCustomer(order.getCustomer());
 		Long shippingDetailId = saveShippingDetail(order.getShippingDetail());
 		order.getCustomer().setCustomerId(customerId);
 		order.getShippingDetail().setId(shippingDetailId);
@@ -58,18 +58,24 @@ public class InMemoryOrderRepository implements OrderRepository {
 		return keyHolder.getKey().longValue();
 	}
 
-	private long saveCustomer(Customer customer) {
+	private String saveCustomer(Customer customer) {
 		long addressId = saveAddress(customer.getBillingAddress());
-		String SQL = "INSERT INTO CUSTOMER(NAME,PHONE_NUMBER,BILLING_ADDRESS_ID) "
-				+ "VALUES (:name, :phoneNumber, :addressId)";
+		String SQL = "INSERT INTO CUSTOMER(ID, NAME, PHONE_NUMBER, BILLING_ADDRESS_ID) "
+				+ "VALUES (:id, :name, :phoneNumber, :addressId)";
 		Map<String, Object> params = new HashMap<String, Object>();
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String currentPrincipalName = authentication.getName();
+		params.put("id", userService.getUserByUsername(currentPrincipalName).getUserId());
+		
 		params.put("name", customer.getName());
 		params.put("phoneNumber", customer.getPhoneNumber());
 		params.put("addressId", addressId);
-		SqlParameterSource paramSource = new MapSqlParameterSource(params);
-		KeyHolder keyHolder = new GeneratedKeyHolder();
-		jdbcTempleate.update(SQL, paramSource, keyHolder, new String[] { "ID" });
-		return keyHolder.getKey().longValue();
+//		SqlParameterSource paramSource = new MapSqlParameterSource(params);
+//		KeyHolder keyHolder = new GeneratedKeyHolder();
+//		jdbcTempleate.update(SQL, paramSource, keyHolder, new String[] { "ID" });
+		jdbcTempleate.update(SQL, params);
+		return userService.getUserByUsername(currentPrincipalName).getUserId();
 	}
 
 	private long saveAddress(Address address) {

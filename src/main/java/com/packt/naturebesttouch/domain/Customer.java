@@ -6,7 +6,7 @@ public class Customer implements Serializable{
 
 	private static final long serialVersionUID = -853315560676098397L;
 
-	private Long customerId;
+	private String customerId;
 	private String name;
 	private Address billingAddress;
 	private String phoneNumber;
@@ -18,19 +18,19 @@ public class Customer implements Serializable{
 	}
 
 
-	public Customer(Long customerId, String name) {
+	public Customer(String customerId, String name) {
 		super();
 		this.customerId = customerId;
 		this.name = name;
 	}
 
 
-	public Long getCustomerId() {
+	public String getCustomerId() {
 		return customerId;
 	}
 
 
-	public void setCustomerId(Long customerId) {
+	public void setCustomerId(String customerId) {
 		this.customerId = customerId;
 	}
 
