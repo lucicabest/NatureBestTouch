@@ -24,12 +24,7 @@
 		modelAttribute="order.customer" class="form-horizontal">
 		<fieldset>
 			<legend>Customer Details</legend>
-			<div class="form-group">
-				<label class="control-label col-lg-2" for="name">Name</label>
-				<div class="col-lg-10">
-					${order.customer.name}<br>
-				</div>
-			</div>
+			${order.customer.name}<br>
 			<div class="form-group">
 				<label class="control-label col-lg-2" for="doorNo">Door No</label>
 				<div class="col-lg-10">
@@ -85,12 +80,15 @@
 			<input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}" />
 			<div class="form-group">
 				<div class="col-lg-offset-2 col-lg-10">
+					<button id="back" class="btn btn-default"
+							name="_eventId_backToUpdateYesOrNoCustomerInfo">back</button>
 					<input type="submit" id="btnAdd" class="btn btn-primary"
-						value="Add" name="_eventId_customerInfoCollected" />
+						value="Update" name="_eventId_customerInfoUpdated" />
 					<button id="btnCancel" class="btn btn-default"
 						name="_eventId_cancel">Cancel</button>
 				</div>
 			</div>
+			
 		</fieldset>
 	</form:form> </section>
 </body>

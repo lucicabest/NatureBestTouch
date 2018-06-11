@@ -60,7 +60,16 @@ public class ShippingDetail implements Serializable{
 
 
 	public void setShippingAddress(Address shippingAddress) {
-		this.shippingAddress = shippingAddress;
+//		this.shippingAddress = shippingAddress;
+//		doing this way because otherwise if you go back after doing ShippingSameAsBilling, 
+//		every time you change the shipping it will change the billing too because of the same references
+		this.shippingAddress.setAreaName(shippingAddress.getAreaName());
+		this.shippingAddress.setCountry(shippingAddress.getCountry());
+		this.shippingAddress.setDoorNo(shippingAddress.getDoorNo());
+		this.shippingAddress.setState(shippingAddress.getState());
+		this.shippingAddress.setStreetName(shippingAddress.getStreetName());
+		this.shippingAddress.setZipCode(shippingAddress.getZipCode());
+		this.shippingAddress.setId(shippingAddress.getId());
 	}
 
 

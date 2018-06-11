@@ -9,17 +9,68 @@
 			result="order.cart" />
 		<transition to="invalidCartWarning"
 			on-exception="com.packt.naturebesttouch.exception.InvalidCartException" />
+		<transition to="checkCustomerExist" />
+	</action-state>
+	
+	<decision-state id="checkCustomerExist">
+		<if test="customerServiceImpl.isCustomerExist()"
+			then="addCurrentCustomerToOrder"
+			else="addNameCustomerToOrder"/>
+	</decision-state>
+	
+	<action-state id="addCurrentCustomerToOrder">
+		<evaluate expression="customerServiceImpl.addCurrentCustomerToOrder()"
+			result="order.customer" />
+		<transition to="updateYesOrNoCustomerInfo" />
+	</action-state>
+	
+	<view-state id="updateYesOrNoCustomerInfo" view="updateYesOrNoCustomerInfo.jsp"
+		model="order">
+		<transition on="updateCustomerDetail" to="updateBillingDetail" />
+		<transition on="customerDetailOK" to="sameShippingAsBilling"/>
+	</view-state>
+	
+	<view-state id="updateBillingDetail" view="updateBillingDetail.jsp"
+		model="order">
+		<transition on="customerInfoUpdated" to="sameShippingAsBilling" />
+		<transition on="backToUpdateYesOrNoCustomerInfo" to="updateYesOrNoCustomerInfo"/>
+	</view-state>
+	
+	
+	
+	<view-state id="sameShippingAsBilling" view="sameShippingAsBilling.jsp"
+		model="order">
+		<transition on="backToUpdateBillingDetail" to="updateBillingDetail" />
+		<transition on="sameAsShipping" to="addShippingToOrder" />
+		<transition on="needsShippingAddress" to="collectShippingDetail"/>
+	</view-state>
+	
+	<action-state id="addShippingToOrder">
+		<evaluate expression="orderServiceImpl.addBillingAsShipping(order.customer.billingAddress)"
+			result="order.shippingDetail" />
+		<transition to="getShippingDate" />
+	</action-state>
+	
+	<view-state id="getShippingDate" view="getShippingDate.jsp"
+		model="order">
+		<transition on="shippingDateCollected" to="orderConfirmation" />
+		<transition on="backToSameShippingAsBilling" to="sameShippingAsBilling" />
+	</view-state>
+	
+	<action-state id="addNameCustomerToOrder">
+		<evaluate expression="customerServiceImpl.addNameCustomerToOrder()"
+			result="order.customer" />
 		<transition to="collectCustomerInfo" />
 	</action-state>
 	
 	<view-state id="collectCustomerInfo" view="collectCustomerInfo.jsp"
 		model="order">
-		<transition on="customerInfoCollected" to="collectShippingDetail" />
+		<transition on="customerInfoCollected" to="sameShippingAsBilling" />
 	</view-state>
 	
 	<view-state id="collectShippingDetail" model="order">
 		<transition on="shippingDetailCollected" to="orderConfirmation" />
-		<transition on="backToCollectCustomerInfo" to="collectCustomerInfo" />
+		<transition on="backToCollectCustomerInfo" to="sameShippingAsBilling" />
 	</view-state>
 	
 	<view-state id="orderConfirmation">
